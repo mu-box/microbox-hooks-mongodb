@@ -14,14 +14,14 @@ run_hook() {
 
   docker exec \
     $container \
-    /opt/nanobox/hooks/$hook "$payload"
+    /opt/microbox/hooks/$hook "$payload"
 }
 
 start_container() {
   name=$1
   ip=$2
-  
-  if docker info | grep "Storage Driver" | grep 'devicemapper\|zfs\|btrfs'; then 
+
+  if docker info | grep "Storage Driver" | grep 'devicemapper\|zfs\|btrfs'; then
     docker_opts+="--storage-opt size=5G"
   fi
 
@@ -31,11 +31,11 @@ start_container() {
     -m 1024M \
     -e "PATH=$(path)" \
     --privileged \
-    --net=nanobox \
+    --net=microbox \
     --ip=$ip \
     ${docker_opts[@]} \
-    --volume=${hookit_dir}/:/opt/nanobox/hooks \
-    nanobox/mongodb:$VERSION
+    --volume=${hookit_dir}/:/opt/microbox/hooks \
+    mubox/mongodb:$VERSION
 }
 
 stop_container() {
@@ -45,9 +45,9 @@ stop_container() {
 
 path() {
   paths=(
-    "/opt/gonano/sbin"
-    "/opt/gonano/bin"
-    "/opt/gonano/bin"
+    "/opt/gomicro/sbin"
+    "/opt/gomicro/bin"
+    "/opt/gomicro/bin"
     "/usr/local/sbin"
     "/usr/local/bin"
     "/usr/sbin"

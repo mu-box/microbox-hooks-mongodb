@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 # hookit is installed as a bundled app, so we need bundler to load it for us
-$:.unshift  '/opt/gonano/hookit/vendor/bundle'
+$:.unshift  '/opt/gomicro/hookit/vendor/bundle'
 require 'bundler/setup'
 
 # load hookit/setup to bootstrap hookit and import the dsl
@@ -25,7 +25,7 @@ end
 
 execute "reconfig replica set" do
   command <<-EOF
-    /data/bin/mongo --eval 'rs.reconfig({ _id : "gonano", members : [ {_id : 0, host : "#{payload[:members].select {|member| member[:role] == "primary"}[0][:local_ip]}:27017", priority: 1}, {_id : 1, host : "#{payload[:members].select {|member| member[:role] == "secondary"}[0][:local_ip]}:27017", priority: 0.5}, {_id : 2, host : "#{payload[:members].select {|member| member[:role] == "arbitrator"}[0][:local_ip]}", arbiterOnly: true} ] }, {force : true});'
+    /data/bin/mongo --eval 'rs.reconfig({ _id : "gomicro", members : [ {_id : 0, host : "#{payload[:members].select {|member| member[:role] == "primary"}[0][:local_ip]}:27017", priority: 1}, {_id : 1, host : "#{payload[:members].select {|member| member[:role] == "secondary"}[0][:local_ip]}:27017", priority: 0.5}, {_id : 2, host : "#{payload[:members].select {|member| member[:role] == "arbitrator"}[0][:local_ip]}", arbiterOnly: true} ] }, {force : true});'
   EOF
-  user 'gonano'
+  user 'gomicro'
 end

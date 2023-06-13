@@ -50,12 +50,12 @@ insert_test_data() {
   port=$3
   key=$4
   data=$5
-  until docker exec ${container} bash -c "/data/bin/mongo gonano --eval 'db.test.insert({\"writable\": \"true\"});'"
+  until docker exec ${container} bash -c "/data/bin/mongo gomicro --eval 'db.test.insert({\"writable\": \"true\"});'"
   do
     sleep 10
   done
-  docker exec ${container} bash -c "/data/bin/mongo gonano --eval 'db.test.remove({\"writable\": \"true\"});'"
-  run docker exec ${container} bash -c "/data/bin/mongo gonano --eval 'db.test.insert({\"key\": \"${key}\", \"value\": \"${data}\"});'"
+  docker exec ${container} bash -c "/data/bin/mongo gomicro --eval 'db.test.remove({\"writable\": \"true\"});'"
+  run docker exec ${container} bash -c "/data/bin/mongo gomicro --eval 'db.test.insert({\"key\": \"${key}\", \"value\": \"${data}\"});'"
   echo_lines
   [ "$status" -eq 0 ]
 
@@ -67,12 +67,12 @@ update_test_data() {
   port=$3
   key=$4
   data=$5
-  until docker exec ${container} bash -c "/data/bin/mongo gonano --eval 'db.test.insert({\"writable\": \"true\"});'"
+  until docker exec ${container} bash -c "/data/bin/mongo gomicro --eval 'db.test.insert({\"writable\": \"true\"});'"
   do
     sleep 10
   done
-  docker exec ${container} bash -c "/data/bin/mongo gonano --eval 'db.test.remove({\"writable\": \"true\"});'"
-  run docker exec ${container} bash -c "/data/bin/mongo gonano --eval 'db.test.update({\"key\": \"${key}\"}, {\$set:{\"value\":\"${data}\"}})'"
+  docker exec ${container} bash -c "/data/bin/mongo gomicro --eval 'db.test.remove({\"writable\": \"true\"});'"
+  run docker exec ${container} bash -c "/data/bin/mongo gomicro --eval 'db.test.update({\"key\": \"${key}\"}, {\$set:{\"value\":\"${data}\"}})'"
   echo_lines
   [ "$status" -eq 0 ]
 }
@@ -83,12 +83,12 @@ verify_test_data() {
   port=$3
   key=$4
   data=$5
-  until docker exec ${container} bash -c "/data/bin/mongo gonano --eval 'db.test.insert({\"writable\": \"true\"});'"
+  until docker exec ${container} bash -c "/data/bin/mongo gomicro --eval 'db.test.insert({\"writable\": \"true\"});'"
   do
     sleep 10
   done
-  docker exec ${container} bash -c "/data/bin/mongo gonano --eval 'db.test.remove({\"writable\": \"true\"});'"
-  run docker exec ${container} bash -c "/data/bin/mongo gonano --quiet --eval 'db.test.find({\"key\": \"${key}\"}, { key: 1, value: 1, _id:0 }).shellPrint();'"
+  docker exec ${container} bash -c "/data/bin/mongo gomicro --eval 'db.test.remove({\"writable\": \"true\"});'"
+  run docker exec ${container} bash -c "/data/bin/mongo gomicro --quiet --eval 'db.test.find({\"key\": \"${key}\"}, { key: 1, value: 1, _id:0 }).shellPrint();'"
   echo_lines
   [ "${lines[0]}" = "{ \"key\" : \"${key}\", \"value\" : \"${data}\" }" ]
   [ "$status" -eq 0 ]
